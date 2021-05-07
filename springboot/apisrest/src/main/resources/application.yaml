@@ -1,1 +1,19 @@
+server:
+  port: 9090
 
+spring:
+  datasource:
+    password: ci0156!
+    username: apisrest
+    url: jdbc:mysql://localhost:3306/apisrest
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: none
+  flyway:
+    user: apisrest
+    password:  ci0156!
+    locations: classpath:db/migration
+    url: jdbc:mysql://localhost:3306/apisrest
+    schemas: apisrest
+    baseline-on-migrate: true

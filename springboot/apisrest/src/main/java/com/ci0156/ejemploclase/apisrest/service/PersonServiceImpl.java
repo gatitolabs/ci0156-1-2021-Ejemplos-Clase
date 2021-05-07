@@ -1,5 +1,6 @@
 package com.ci0156.ejemploclase.apisrest.service;
 
+import com.ci0156.ejemploclase.apisrest.dao.PersonDAO;
 import com.ci0156.ejemploclase.apisrest.dto.PersonDto;
 import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
@@ -12,11 +13,47 @@ import java.util.List;
 @Service
 public class PersonServiceImpl implements PersonService{
 
+  private final PersonDAO personDAO;
+
+  public PersonServiceImpl(PersonDAO personDAO){
+    this.personDAO = personDAO;
+  }
+
   @Override
   public PersonDto getPersonById(long id) {
     log.info("Me pidieron la persona con id: " + id);
 
-    return this.generateRandomPerson(id);
+    var personInDatabase = this.personDAO.findById(id);
+
+    if(personInDatabase.isPresent()){
+      // se encontro el person en la DB
+      return PersonDto.builder()
+        .firstName(personInDatabase.get().getFirstName())
+        .lastName(personInDatabase.get().getLastName())
+        .email(personInDatabase.get().getEmail())
+        .id(personInDatabase.get().getId()).build();
+
+    }
+    else{
+      // si no lo encuentra, regreso un PersonDto vacio
+      return PersonDto.builder().build();
+    }
+
+  }
+
+  @Override
+  public PersonDto getByEmail(String email){
+    log.info("Buscando person con email: " + email);
+    var personInDatabase = this.personDAO.findPersonByEmail(email);
+    if(null != personInDatabase){
+      return PersonDto.builder()
+        .firstName(personInDatabase.getFirstName())
+        .lastName(personInDatabase.getLastName())
+        .email(personInDatabase.getEmail())
+        .id(personInDatabase.getId()).build();
+    }
+
+    return PersonDto.builder().build();
   }
 
   @Override

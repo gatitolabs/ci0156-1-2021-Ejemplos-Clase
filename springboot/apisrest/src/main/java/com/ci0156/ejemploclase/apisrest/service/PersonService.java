@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface PersonService {
   PersonDto getPersonById(long id);
+  PersonDto getByEmail(String email);
   PersonDto savePerson(PersonDto p);
   List<PersonDto> getAll();
 }

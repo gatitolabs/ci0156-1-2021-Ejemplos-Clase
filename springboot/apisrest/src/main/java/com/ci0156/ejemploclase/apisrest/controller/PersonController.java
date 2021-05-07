@@ -41,4 +41,12 @@ public class PersonController {
 
     return result;
   }
+
+
+  @GetMapping("email/{email}")
+  public PersonDto getPersonByEmail(@PathVariable String email){
+    // ! Puede pasar que el email haya que decodearlo
+    // URLDecoder.decode(email, "UTF-8");
+    return this.personService.getByEmail(email);
+  }
 }
