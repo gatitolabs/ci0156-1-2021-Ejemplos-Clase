@@ -1,5 +1,7 @@
 server:
   port: 9090
+  error:
+    include-stacktrace: on_trace_param
 
 spring:
   datasource:
@@ -10,6 +12,10 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
   flyway:
     user: apisrest
     password:  ci0156!
@@ -17,3 +23,10 @@ spring:
     url: jdbc:mysql://localhost:3306/apisrest
     schemas: apisrest
     baseline-on-migrate: true
+
+security:
+  jwt:
+    token:
+      secret-key: llave-super-requete-ultra-secreta
+      expire-length: 300000 # 5 minutos : 5 minutos * 60 segundos * 1000 millis
+      refresh-expire-length: 86400000 # 24hrs

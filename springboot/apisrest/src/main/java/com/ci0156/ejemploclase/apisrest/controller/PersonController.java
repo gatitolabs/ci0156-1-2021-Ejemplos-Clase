@@ -2,8 +2,10 @@ package com.ci0156.ejemploclase.apisrest.controller;
 
 import com.ci0156.ejemploclase.apisrest.dto.PersonDto;
 import com.ci0156.ejemploclase.apisrest.service.PersonService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 // Comentario
@@ -48,5 +50,19 @@ public class PersonController {
     // ! Puede pasar que el email haya que decodearlo
     // URLDecoder.decode(email, "UTF-8");
     return this.personService.getByEmail(email);
+  }
+
+
+  @GetMapping("me")
+  public PersonDto getCurrentUser(Principal principal){
+    String email = principal.getName();
+    return this.personService.getByEmail(email);
+  }
+
+
+  @GetMapping("supersecreto")
+  @PreAuthorize("hasAuthority('ADMIN')")
+  public String superSecreto(Principal principal){
+    return "super secreto!!!";
   }
 }
