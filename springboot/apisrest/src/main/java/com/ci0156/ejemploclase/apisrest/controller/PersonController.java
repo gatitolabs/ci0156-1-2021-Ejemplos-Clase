@@ -2,6 +2,8 @@ package com.ci0156.ejemploclase.apisrest.controller;
 
 import com.ci0156.ejemploclase.apisrest.dto.PersonDto;
 import com.ci0156.ejemploclase.apisrest.service.PersonService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,16 +23,25 @@ public class PersonController {
   }
 
   @GetMapping
+  @Operation(security = {
+    @SecurityRequirement(name = "userToken") // Este nombre sale del @SecurityScheme en ApisrestApplication
+  })
   public List<PersonDto> getAll(){
     return this.personService.getAll();
   }
 
   @PostMapping(consumes = "application/json", produces = "application/json")
+  @Operation(security = {
+    @SecurityRequirement(name = "userToken") // Este nombre sale del @SecurityScheme en ApisrestApplication
+  })
   public PersonDto save(@RequestBody PersonDto p){
     return this.personService.savePerson(p);
   }
 
   @GetMapping("{id}")
+  @Operation(security = {
+    @SecurityRequirement(name = "userToken") // Este nombre sale del @SecurityScheme en ApisrestApplication
+  })
   public PersonDto getPersonById(@PathVariable long id,
                                  @RequestParam(value="uppercase", defaultValue = "false") boolean uppercase){
 
@@ -46,6 +57,9 @@ public class PersonController {
 
 
   @GetMapping("email/{email}")
+  @Operation(security = {
+    @SecurityRequirement(name = "userToken") // Este nombre sale del @SecurityScheme en ApisrestApplication
+  })
   public PersonDto getPersonByEmail(@PathVariable String email){
     // ! Puede pasar que el email haya que decodearlo
     // URLDecoder.decode(email, "UTF-8");
@@ -54,6 +68,9 @@ public class PersonController {
 
 
   @GetMapping("me")
+  @Operation(security = {
+    @SecurityRequirement(name = "userToken") // Este nombre sale del @SecurityScheme en ApisrestApplication
+  })
   public PersonDto getCurrentUser(Principal principal){
     String email = principal.getName();
     return this.personService.getByEmail(email);
@@ -61,6 +78,9 @@ public class PersonController {
 
 
   @GetMapping("supersecreto")
+  @Operation(security = {
+    @SecurityRequirement(name = "userToken") // Este nombre sale del @SecurityScheme en ApisrestApplication
+  })
   @PreAuthorize("hasAuthority('ADMIN')")
   public String superSecreto(Principal principal){
     return "super secreto!!!";

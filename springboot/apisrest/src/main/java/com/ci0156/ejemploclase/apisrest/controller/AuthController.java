@@ -17,17 +17,17 @@ public class AuthController {
     this.personService = personService;
   }
 
-  @PostMapping("signup")
+  @PostMapping(path = "signup", consumes = "application/json", produces = "application/json")
   public ApiResponse signUp(@RequestBody SignupDto signupDto){
     return this.personService.createUser(signupDto);
   }
 
-  @PostMapping("login")
+  @PostMapping(path = "login", consumes = "application/json", produces = "application/json")
   public LoginResponse signIn(@RequestBody LoginCredentials loginCredentials){
     return this.personService.signIn(loginCredentials);
   }
 
-  @PostMapping("refresh")
+  @PostMapping(path = "refresh", consumes = "application/json", produces = "application/json")
   public LoginResponse refreshTokens(@RequestBody RefreshTokenRequest refreshTokenRequest){
     return this.personService.refreshToken(refreshTokenRequest);
   }
